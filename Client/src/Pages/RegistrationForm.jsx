@@ -77,8 +77,8 @@ export default function OnlineResistrationForm() {
   const weight = form.watch("weightCategory");
 
   const getAmount = () => {
-    if (weight === "80kg+") return 150;
-    if (weight) return 150;
+    if (weight === "80kg+") return 1;
+    if (weight) return 1;
     return "";
   };
 
@@ -206,7 +206,7 @@ export default function OnlineResistrationForm() {
     try {
       setLoading(true);
 
-      const amount = values.weightCategory === "80kg+" ? 150 : 150;
+      const amount = values.weightCategory === "80kg+" ? 1 : 1;
 
       // ── Step 1: Create Order (same as before) ─────────────────────────
       const orderRes = await fetch(
