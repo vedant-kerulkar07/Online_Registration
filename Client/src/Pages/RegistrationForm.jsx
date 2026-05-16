@@ -83,120 +83,182 @@ export default function OnlineResistrationForm() {
   };
 
   // ✅ PAYMENT FLOW
+  // const onSubmit = async (values) => {
+  //   try {
+  //     setLoading(true);
+
+  //     const amount =
+  //       values.weightCategory === "80kg+" ? 150 : 150;
+
+  //     const orderRes = await fetch(
+  //       `${getEnv("VITE_API_URL")}/payment/create-order`,
+  //       {
+  //         method: "POST",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //         },
+  //         body: JSON.stringify({ amount }),
+  //       }
+  //     );
+
+  //     const orderData = await orderRes.json();
+
+  //     if (!orderRes.ok) {
+  //       return showToast(
+  //         "error",
+  //         orderData.message || "Failed to create order"
+  //       );
+  //     }
+
+  //     const order = orderData.order;
+
+  //     if (!window.Razorpay) {
+  //       return showToast(
+  //         "error",
+  //         "Razorpay SDK not loaded"
+  //       );
+  //     }
+  //     console.log(
+  //       "FRONTEND KEY:",
+  //       getEnv("VITE_RAZORPAY_KEY_ID")
+  //     );
+  //     const options = {
+  //       key: getEnv("VITE_RAZORPAY_KEY_ID"),
+  //       amount: order.amount,
+  //       currency: "INR",
+  //       name: "Ahilyanagar Armwrestling",
+  //       description: "Tournament Registration",
+  //       order_id: order.id,
+
+  //       handler: async function (response) {
+  //         try {
+  //           const verifyRes = await fetch(
+  //             `${getEnv("VITE_API_URL")}/payment/verify`,
+  //             {
+  //               method: "POST",
+  //               headers: {
+  //                 "Content-Type": "application/json",
+  //               },
+  //               body: JSON.stringify({
+  //                 ...response,
+  //                 registrationData: values,
+  //               }),
+  //             }
+  //           );
+
+  //           const verifyData = await verifyRes.json();
+
+  //           if (verifyRes.ok) {
+  //            showToast("success", verifyData.message || "Registration successfully");
+
+  //             form.reset();
+
+  //             navigate("/success");
+  //           } else {
+  //             showToast(
+  //               "error",
+  //               verifyData.message ||
+  //               "Payment verification failed"
+  //             );
+  //           }
+  //         } catch (err) {
+  //           console.error(err);
+
+  //           showToast(
+  //             "error",
+  //             "Verification failed"
+  //           );
+  //         }
+  //       },
+
+  //       prefill: {
+  //         name: `${values.firstName} ${values.lastName}`,
+  //         email: values.email,
+  //         contact: values.contactNumber,
+  //       },
+
+  //       theme: {
+  //         color: "#eab308",
+  //       },
+  //     };
+
+  //     const rzp = new window.Razorpay(options);
+
+  //     rzp.on("payment.failed", function () {
+  //       showToast("error", "Payment failed ❌");
+  //     });
+
+  //     rzp.open();
+
+  //   } catch (err) {
+  //     console.error(err);
+
+  //     showToast(
+  //       "error",
+  //       err.message || "Something went wrong"
+  //     );
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
   const onSubmit = async (values) => {
     try {
       setLoading(true);
 
-      const amount =
-        values.weightCategory === "80kg+" ? 150 : 150;
+      const amount = values.weightCategory === "80kg+" ? 150 : 150;
 
+      // ── Step 1: Create Order (same as before) ─────────────────────────
       const orderRes = await fetch(
         `${getEnv("VITE_API_URL")}/payment/create-order`,
         {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ amount }),
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            amount,
+            customerName: `${values.firstName} ${values.lastName}`,
+            customerEmail: values.email,
+            customerPhone: values.contactNumber,
+          }),
         }
       );
 
       const orderData = await orderRes.json();
 
       if (!orderRes.ok) {
-        return showToast(
-          "error",
-          orderData.message || "Failed to create order"
-        );
+        return showToast("error", orderData.message || "Failed to create order");
       }
 
-      const order = orderData.order;
+      const { payment_session_id, order_id } = orderData;
 
-      if (!window.Razorpay) {
-        return showToast(
-          "error",
-          "Razorpay SDK not loaded"
-        );
-      }
-      console.log(
-        "FRONTEND KEY:",
-        getEnv("VITE_RAZORPAY_KEY_ID")
-      );
-      const options = {
-        key: getEnv("VITE_RAZORPAY_KEY_ID"),
-        amount: order.amount,
-        currency: "INR",
-        name: "Ahilyanagar Armwrestling",
-        description: "Tournament Registration",
-        order_id: order.id,
+      // ── Store values in sessionStorage (because page will redirect) ───
+      // This replaces the Razorpay handler() callback
+      // ── Store values in sessionStorage ───
+      sessionStorage.setItem("order_id", order_id);
+      sessionStorage.setItem("registrationData", JSON.stringify({
+        ...values,
+        amount: amount,   
+      }));
 
-        handler: async function (response) {
-          try {
-            const verifyRes = await fetch(
-              `${getEnv("VITE_API_URL")}/payment/verify`,
-              {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                  ...response,
-                  registrationData: values,
-                }),
-              }
-            );
+      // ── Step 2: Open Cashfree (same role as rzp.open()) ───────────────
+      const { load } = await import("@cashfreepayments/cashfree-js");
 
-            const verifyData = await verifyRes.json();
-
-            if (verifyRes.ok) {
-             showToast("success", verifyData.message || "Registration successfully");
-
-              form.reset();
-
-              navigate("/success");
-            } else {
-              showToast(
-                "error",
-                verifyData.message ||
-                "Payment verification failed"
-              );
-            }
-          } catch (err) {
-            console.error(err);
-
-            showToast(
-              "error",
-              "Verification failed"
-            );
-          }
-        },
-
-        prefill: {
-          name: `${values.firstName} ${values.lastName}`,
-          email: values.email,
-          contact: values.contactNumber,
-        },
-
-        theme: {
-          color: "#eab308",
-        },
-      };
-
-      const rzp = new window.Razorpay(options);
-
-      rzp.on("payment.failed", function () {
-        showToast("error", "Payment failed ❌");
+      const cashfree = await load({
+        mode: getEnv("VITE_NODE_ENV") === "production" ? "production" : "sandbox",
       });
 
-      rzp.open();
+      cashfree.checkout({
+        paymentSessionId: payment_session_id,
+        redirectTarget: "_self", // page redirects to return_url after payment
+      });
+
+      // ── Everything after this runs on /payment-status page ────────────
+      // Same as your Razorpay handler() but on a separate page
+      // because Cashfree redirects instead of using a popup callback
 
     } catch (err) {
       console.error(err);
-
-      showToast(
-        "error",
-        err.message || "Something went wrong"
-      );
+      showToast("error", err.message || "Something went wrong");
     } finally {
       setLoading(false);
     }

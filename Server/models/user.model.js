@@ -72,6 +72,9 @@ const registrationSchema = new mongoose.Schema(
       required: true,
       enum: ["Right", "Left"],
     },
+    orderId: {
+      type: String,
+    },
   },
   { timestamps: true }
 );
