@@ -202,6 +202,7 @@ export default function OnlineResistrationForm() {
     }
   };
 
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-black via-slate-900 to-black text-white p-3 sm:p-4 md:p-10 relative overflow-hidden">
 

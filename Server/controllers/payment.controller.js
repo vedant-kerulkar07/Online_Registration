@@ -9,7 +9,7 @@ import Registration from "../models/user.model.js";
 export const createOrder = async (req, res) => {
 
   try {
-  
+
     // Initialize Razorpay inside function
     const razorpay = new Razorpay({
       key_id: process.env.RAZORPAY_KEY_ID,

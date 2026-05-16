@@ -53,7 +53,7 @@ export const createRegistration = async (req, res) => {
       amount,
       address,
       hand,
-      paymentStatus: "Pending",
+      paymentStatus: "Completed",
       paymentId: "",
     });
 
@@ -91,6 +91,29 @@ export const createRegistration = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: "Server error",
+      error: error.message,
+    });
+  }
+};
+
+// GET ALL REGISTRATIONS
+export const getAllRegistrations = async (req, res) => {
+  try {
+    const registrations = await Registration.find().sort({
+      createdAt: -1,
+    });
+
+    res.status(200).json({
+      success: true,
+      count: registrations.length,
+      data: registrations,
+    });
+  } catch (error) {
+    console.error("Admin fetch error:", error);
+
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch registrations",
       error: error.message,
     });
   }

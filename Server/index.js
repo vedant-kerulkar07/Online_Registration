@@ -30,7 +30,6 @@ app.use(
 
 app.use("/api/registration", registrationRoutes);
 app.use("/api/payment", paymentRoutes);
-
 // MongoDB connection
 mongoose
   .connect(MONGO_URI, { dbName: 'ahilyanagar-armwrestling' })
