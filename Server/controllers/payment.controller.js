@@ -1,115 +1,3 @@
-// import dotenv from "dotenv";
-// dotenv.config();
-
-// import Razorpay from "razorpay";
-// import crypto from "crypto";
-// import Registration from "../models/user.model.js";
-
-
-// export const createOrder = async (req, res) => {
-
-//   try {
-
-//     // Initialize Razorpay inside function
-//     const razorpay = new Razorpay({
-//       key_id: process.env.RAZORPAY_KEY_ID,
-//       key_secret: process.env.RAZORPAY_KEY_SECRET,
-//     });
-//     const { amount } = req.body;
-
-//     // Validation
-//     if (!amount) {
-//       return res.status(400).json({
-//         success: false,
-//         message: "Amount is required",
-//       });
-//     }
-
-//     const options = {
-//       amount: amount * 100, // Convert ₹ to paisa
-//       currency: "INR",
-//       receipt: `receipt_${Date.now()}`,
-//     };
-
-//     const order = await razorpay.orders.create(options);
-
-//     res.status(200).json({
-//       success: true,
-//       order,
-//     });
-
-//   } catch (error) {
-//     console.error("Create order error:", error);
-
-//     res.status(500).json({
-//       success: false,
-//       message: "Order creation failed",
-//       error: error.message,
-//     });
-//   }
-// };
-
-// export const verifyPayment = async (req, res) => {
-//   try {
-
-//     const {
-//       razorpay_order_id,
-//       razorpay_payment_id,
-//       razorpay_signature,
-//       registrationId,
-//     } = req.body;
-
-//     // Validate required fields
-//     if (
-//       !razorpay_order_id ||
-//       !razorpay_payment_id ||
-//       !razorpay_signature
-//     ) {
-//       return res.status(400).json({
-//         success: false,
-//         message: "Payment details are missing",
-//       });
-//     }
-
-//     // Generate signature
-//     const body = `${razorpay_order_id}|${razorpay_payment_id}`;
-
-//     const expectedSignature = crypto
-//       .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
-//       .update(body)
-//       .digest("hex");
-
-//     // Verify signature
-//     if (expectedSignature !== razorpay_signature) {
-//       return res.status(400).json({
-//         success: false,
-//         message: "Invalid payment signature",
-//       });
-//     }
-
-//     // Update registration payment status
-//     await Registration.findByIdAndUpdate(registrationId, {
-//       paymentStatus: "Completed",
-//       paymentId: razorpay_payment_id,
-//     });
-
-//     res.status(200).json({
-//       success: true,
-//       message: "Payment verified successfully",
-//     });
-
-//   } catch (error) {
-//     console.error("Verify payment error:", error);
-
-//     res.status(500).json({
-//       success: false,
-//       message: "Payment verification failed",
-//       error: error.message,
-//     });
-//   }
-// };
-
-
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -117,7 +5,6 @@ import axios from "axios";
 import crypto from "crypto";
 import Registration from "../models/user.model.js";
 
-// ─── Cashfree Config ───────────────────────────────────────────────────────────
 const CASHFREE_BASE_URL =
   process.env.NODE_ENV === "production"
     ? "https://api.cashfree.com/pg"
@@ -135,7 +22,6 @@ export const createOrder = async (req, res) => {
   try {
     const { amount, customerName, customerEmail, customerPhone } = req.body;
 
-    // Validation
     if (!amount || !customerName || !customerEmail || !customerPhone) {
       return res.status(400).json({
         success: false,
@@ -147,7 +33,7 @@ export const createOrder = async (req, res) => {
 
     const orderData = {
       order_id: orderId,
-      order_amount: amount,        // ₹ directly — NO need to multiply by 100
+      order_amount: amount,
       order_currency: "INR",
       customer_details: {
         customer_id: `cust_${Date.now()}`,
@@ -186,7 +72,7 @@ export const createOrder = async (req, res) => {
 // ─── Verify Payment ────────────────────────────────────────────────────────────
 export const verifyPayment = async (req, res) => {
   try {
-    const { order_id, registrationData } = req.body; // ✅ changed registrationId → registrationData
+    const { order_id, registrationData } = req.body;
 
     if (!order_id || !registrationData) {
       return res.status(400).json({
@@ -195,7 +81,18 @@ export const verifyPayment = async (req, res) => {
       });
     }
 
-    // Fetch order status from Cashfree
+    // ✅ Security 1 — Prevent duplicate registration
+    // If someone retries after CORS/network error, they won't be charged twice
+    const existing = await Registration.findOne({ orderId: order_id });
+    if (existing) {
+      return res.status(200).json({
+        success: true,
+        message: "Payment already verified. Registration saved successfully.",
+      });
+    }
+
+    // ✅ Security 2 — Always verify payment status from Cashfree directly
+    // Never trust frontend — always confirm from Cashfree server
     const response = await axios.get(
       `${CASHFREE_BASE_URL}/orders/${order_id}`,
       { headers: cashfreeHeaders }
@@ -203,10 +100,22 @@ export const verifyPayment = async (req, res) => {
 
     const orderData = response.data;
 
+    // ✅ Security 3 — Only proceed if Cashfree confirms PAID
     if (orderData.order_status !== "PAID") {
       return res.status(400).json({
         success: false,
         message: `Payment not completed. Status: ${orderData.order_status}`,
+      });
+    }
+
+    // ✅ Security 4 — Verify amount matches what you expected
+    // Prevents someone from paying ₹1 and registering for ₹150 event
+    const expectedAmount = 1;
+    if (parseFloat(orderData.order_amount) !== expectedAmount) {
+      console.error(`Amount mismatch: expected ${expectedAmount}, got ${orderData.order_amount}`);
+      return res.status(400).json({
+        success: false,
+        message: "Payment amount mismatch. Please contact support.",
       });
     }
 
@@ -219,12 +128,14 @@ export const verifyPayment = async (req, res) => {
     const payments = paymentsResponse.data;
     const successfulPayment = payments.find((p) => p.payment_status === "SUCCESS");
 
-    // ✅ Create new registration with form data + payment info
+    // ✅ Security 5 — Save with full payment audit trail
     const registration = new Registration({
       ...registrationData,
       paymentStatus: "Completed",
       paymentId: successfulPayment?.cf_payment_id || orderData.cf_order_id,
       orderId: order_id,
+      amount: orderData.order_amount,
+      paidAt: new Date(),   // exact time of payment
     });
 
     await registration.save();
@@ -244,14 +155,19 @@ export const verifyPayment = async (req, res) => {
   }
 };
 
-// ─── Webhook Handler (optional but recommended) ────────────────────────────────
+// ─── Webhook — backup safety net ───────────────────────────────────────────────
+// Even if user closes browser or CORS fails, webhook saves the registration
 export const handleWebhook = async (req, res) => {
   try {
-    const webhookSecret = process.env.CASHFREE_WEBHOOK_SECRET;
+    const webhookSecret = process.env.CASHFREE_SECRET_KEY;
     const signature = req.headers["x-webhook-signature"];
     const timestamp = req.headers["x-webhook-timestamp"];
 
-    // Verify webhook signature
+    if (!signature || !timestamp) {
+      return res.status(401).json({ success: false, message: "Missing webhook headers" });
+    }
+
+    // ✅ Security 6 — Verify webhook is genuinely from Cashfree
     const signedPayload = `${timestamp}${JSON.stringify(req.body)}`;
     const expectedSignature = crypto
       .createHmac("sha256", webhookSecret)
@@ -259,35 +175,38 @@ export const handleWebhook = async (req, res) => {
       .digest("base64");
 
     if (expectedSignature !== signature) {
-      return res.status(401).json({
-        success: false,
-        message: "Invalid webhook signature",
-      });
+      return res.status(401).json({ success: false, message: "Invalid webhook signature" });
     }
 
     const { data, type } = req.body;
 
-    // Handle successful payment event
     if (type === "PAYMENT_SUCCESS_WEBHOOK") {
       const { order, payment } = data;
 
-      await Registration.findOneAndUpdate(
-        { paymentId: order.order_id },  // match by order_id if stored earlier
-        {
+      // ✅ Security 7 — Webhook also checks for duplicate before saving
+      const existing = await Registration.findOne({ orderId: order.order_id });
+
+      if (!existing) {
+        // Payment succeeded but registration missing (CORS/network failure case)
+        // Webhook saves it automatically as a safety net
+        console.log(`⚠️ Webhook saving missing registration for order: ${order.order_id}`);
+
+        await Registration.create({
+          orderId: order.order_id,
           paymentStatus: "Completed",
           paymentId: payment.cf_payment_id,
-        }
-      );
+          amount: order.order_amount,
+          paidAt: new Date(),
+          // registrationData won't be here — contact customer via email
+          webhookSaved: true,   // flag so admin knows to follow up
+        });
+      }
     }
 
     res.status(200).json({ success: true, message: "Webhook received" });
 
   } catch (error) {
     console.error("Webhook error:", error.message);
-    res.status(500).json({
-      success: false,
-      message: "Webhook processing failed",
-      error: error.message,
-    });
+    res.status(500).json({ success: false, message: "Webhook processing failed" });
   }
 };

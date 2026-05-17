@@ -12,6 +12,7 @@
   "description": "",
   "dependencies": {
     "@cashfreepayments/cashfree-js": "^1.0.7",
+    "axios": "^1.16.1",
     "cookie-parser": "^1.4.7",
     "cookies-parser": "^1.2.0",
     "cors": "^2.8.6",

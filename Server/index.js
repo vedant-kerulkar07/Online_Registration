@@ -7,39 +7,43 @@ import mongoose from 'mongoose';
 import paymentRoutes from './routes/payment.routes.js';
 import registrationRoutes from './routes/registration.routes.js';
 
-
-// Load environment variables
 dotenv.config();
 
 const PORT = process.env.PORT || 5000;
-const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:5173";
 const MONGO_URI = process.env.MONGO_URI;
 
-// Initialize app
 const app = express();
 
-// Middleware
-app.use(cookieParser());
-app.use(express.json());
+// ✅ Fix 1 — handle preflight first, before any other middleware
+app.options(/(.*)/, cors());
+
+// ✅ Fix 2 — allow multiple frontend URLs
 app.use(
   cors({
-    origin: FRONTEND_URL,
+    origin: [
+      "https://ahilyanagar-armwrestling.vercel.app",  // your frontend
+      "http://localhost:5173",                          // local dev
+    ],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
   })
 );
 
+app.use(cookieParser());
+app.use(express.json());
+
 app.use("/api/registration", registrationRoutes);
 app.use("/api/payment", paymentRoutes);
-// MongoDB connection
+
 mongoose
   .connect(MONGO_URI, { dbName: 'ahilyanagar-armwrestling' })
   .then(() => console.log('✅ Database connected'))
   .catch((err) => {
     console.error('❌ Database connection failed:', err.message);
-    process.exit(1); // Exit if DB fails
+    process.exit(1);
   });
 
-// Global error handler
 app.use((err, req, res, next) => {
   console.error("🔥 Error:", err);
   const statusCode = err.statusCode || 500;
@@ -51,7 +55,6 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Start server
 app.listen(PORT, () => {
   console.log(`🚀 Server is running on port ${PORT}`);
 });

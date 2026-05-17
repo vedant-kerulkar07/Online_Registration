@@ -77,136 +77,16 @@ export default function OnlineResistrationForm() {
   const weight = form.watch("weightCategory");
 
   const getAmount = () => {
-    if (weight === "80kg+") return 1;
-    if (weight) return 1;
+    if (weight === "80kg+") return 10;
+    if (weight) return 10;
     return "";
   };
-
-  // ✅ PAYMENT FLOW
-  // const onSubmit = async (values) => {
-  //   try {
-  //     setLoading(true);
-
-  //     const amount =
-  //       values.weightCategory === "80kg+" ? 150 : 150;
-
-  //     const orderRes = await fetch(
-  //       `${getEnv("VITE_API_URL")}/payment/create-order`,
-  //       {
-  //         method: "POST",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //         },
-  //         body: JSON.stringify({ amount }),
-  //       }
-  //     );
-
-  //     const orderData = await orderRes.json();
-
-  //     if (!orderRes.ok) {
-  //       return showToast(
-  //         "error",
-  //         orderData.message || "Failed to create order"
-  //       );
-  //     }
-
-  //     const order = orderData.order;
-
-  //     if (!window.Razorpay) {
-  //       return showToast(
-  //         "error",
-  //         "Razorpay SDK not loaded"
-  //       );
-  //     }
-  //     console.log(
-  //       "FRONTEND KEY:",
-  //       getEnv("VITE_RAZORPAY_KEY_ID")
-  //     );
-  //     const options = {
-  //       key: getEnv("VITE_RAZORPAY_KEY_ID"),
-  //       amount: order.amount,
-  //       currency: "INR",
-  //       name: "Ahilyanagar Armwrestling",
-  //       description: "Tournament Registration",
-  //       order_id: order.id,
-
-  //       handler: async function (response) {
-  //         try {
-  //           const verifyRes = await fetch(
-  //             `${getEnv("VITE_API_URL")}/payment/verify`,
-  //             {
-  //               method: "POST",
-  //               headers: {
-  //                 "Content-Type": "application/json",
-  //               },
-  //               body: JSON.stringify({
-  //                 ...response,
-  //                 registrationData: values,
-  //               }),
-  //             }
-  //           );
-
-  //           const verifyData = await verifyRes.json();
-
-  //           if (verifyRes.ok) {
-  //            showToast("success", verifyData.message || "Registration successfully");
-
-  //             form.reset();
-
-  //             navigate("/success");
-  //           } else {
-  //             showToast(
-  //               "error",
-  //               verifyData.message ||
-  //               "Payment verification failed"
-  //             );
-  //           }
-  //         } catch (err) {
-  //           console.error(err);
-
-  //           showToast(
-  //             "error",
-  //             "Verification failed"
-  //           );
-  //         }
-  //       },
-
-  //       prefill: {
-  //         name: `${values.firstName} ${values.lastName}`,
-  //         email: values.email,
-  //         contact: values.contactNumber,
-  //       },
-
-  //       theme: {
-  //         color: "#eab308",
-  //       },
-  //     };
-
-  //     const rzp = new window.Razorpay(options);
-
-  //     rzp.on("payment.failed", function () {
-  //       showToast("error", "Payment failed ❌");
-  //     });
-
-  //     rzp.open();
-
-  //   } catch (err) {
-  //     console.error(err);
-
-  //     showToast(
-  //       "error",
-  //       err.message || "Something went wrong"
-  //     );
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
 
   const onSubmit = async (values) => {
     try {
       setLoading(true);
 
-      const amount = values.weightCategory === "80kg+" ? 1 : 1;
+      const amount = values.weightCategory === "80kg+" ? 10 : 10;
 
       // ── Step 1: Create Order (same as before) ─────────────────────────
       const orderRes = await fetch(
@@ -506,10 +386,6 @@ export default function OnlineResistrationForm() {
                               <SelectContent className="bg-slate-900 text-white border-gray-700">
                                 <SelectItem value="Right">
                                   Right Hand
-                                </SelectItem>
-
-                                <SelectItem value="Left">
-                                  Left Hand
                                 </SelectItem>
                               </SelectContent>
                             </Select>
