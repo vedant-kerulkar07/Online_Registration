@@ -110,7 +110,7 @@ export const verifyPayment = async (req, res) => {
 
     // ✅ Security 4 — Verify amount matches what you expected
     // Prevents someone from paying ₹1 and registering for ₹150 event
-    const expectedAmount = 1;
+    const expectedAmount = 10;
     if (parseFloat(orderData.order_amount) !== expectedAmount) {
       console.error(`Amount mismatch: expected ${expectedAmount}, got ${orderData.order_amount}`);
       return res.status(400).json({
