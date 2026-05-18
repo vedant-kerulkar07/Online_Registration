@@ -4,6 +4,8 @@ dotenv.config();
 import axios from "axios";
 import crypto from "crypto";
 import Registration from "../models/user.model.js";
+import { registrationMailTemplate } from "../services/templates/registrationMail.js";
+import { sendMail } from "../services/mail.js";
 
 const CASHFREE_BASE_URL =
   process.env.NODE_ENV === "production"
@@ -139,6 +141,19 @@ export const verifyPayment = async (req, res) => {
     });
 
     await registration.save();
+
+    const { subject, text } = registrationMailTemplate({
+      firstName: registrationData.firstName,
+      lastName: registrationData.lastName,
+      weightCategory: registrationData.weightCategory,
+      amount: orderData.order_amount,
+    });
+
+    await sendMail({
+      to: registrationData.email,
+      subject,
+      text,
+    });
 
     res.status(200).json({
       success: true,
