@@ -109,19 +109,6 @@ const AdminPage = () => {
       },
     });
 
-    // Footer Data
-    doc.text(
-      `Total Registrations: ${users.length}`,
-      14,
-      doc.lastAutoTable.finalY + 15
-    );
-
-    doc.text(
-      `Total Revenue: ₹${totalRevenue}`,
-      14,
-      doc.lastAutoTable.finalY + 25
-    );
-
     // Save PDF
     doc.save("registrations-report.pdf");
   };
