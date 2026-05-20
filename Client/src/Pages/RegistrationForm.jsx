@@ -77,8 +77,8 @@ export default function OnlineResistrationForm() {
   const weight = form.watch("weightCategory");
 
   const getAmount = () => {
-    if (weight === "80kg+") return 10;
-    if (weight) return 10;
+    if (weight === "80kg+") return 149;
+    if (weight) return 149;
     return "";
   };
 
@@ -86,7 +86,7 @@ export default function OnlineResistrationForm() {
     try {
       setLoading(true);
 
-      const amount = values.weightCategory === "80kg+" ? 10 : 10;
+      const amount = values.weightCategory === "80kg+" ? 149 : 149;
 
       // ── Step 1: Create Order (same as before) ─────────────────────────
       const orderRes = await fetch(
@@ -143,8 +143,6 @@ export default function OnlineResistrationForm() {
       setLoading(false);
     }
   };
-
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-black via-slate-900 to-black text-white p-3 sm:p-4 md:p-10 relative overflow-hidden">
 
@@ -162,13 +160,12 @@ export default function OnlineResistrationForm() {
       </div>
 
       <div className="max-w-4xl mx-auto relative z-10">
-
         {/* Header Section */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-8 sm:mb-10 mt-24 sm:mt-28 md:mt-10 px-2"
+          className="text-center mb-8 sm:mb-10 mt-20 sm:mt-20 md:mt-10 px-2"
         >
           <h1 className="pb-2 sm:pb-3 text-2xl sm:text-4xl md:text-5xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-yellow-300 to-amber-500 leading-tight">
             Ahilyanagar Armwrestling
@@ -339,23 +336,15 @@ export default function OnlineResistrationForm() {
 
                               <SelectContent className="bg-slate-900 text-white border-gray-700">
                                 <SelectItem value="Below 50kg">
-                                  Below 50kg
+                                  Below 60kg
                                 </SelectItem>
 
                                 <SelectItem value="50-60kg">
-                                  50-60kg
-                                </SelectItem>
-
-                                <SelectItem value="60-70kg">
-                                  60-70kg
-                                </SelectItem>
-
-                                <SelectItem value="70-80kg">
-                                  70-80kg
+                                  below 75 kg
                                 </SelectItem>
 
                                 <SelectItem value="80kg+">
-                                  80kg+
+                                  above 75kg+
                                 </SelectItem>
                               </SelectContent>
                             </Select>
@@ -480,6 +469,81 @@ export default function OnlineResistrationForm() {
           </div>
         </motion.div>
       </div>
+      {/* ─── Instagram Follow Banner ─── */}
+
+{/* DESKTOP: fixed floating pill, bounces continuously */}
+<div className="hidden md:flex fixed bottom-8 right-8 z-50
+         items-center gap-3 px-5 py-3
+         bg-gradient-to-r from-yellow-400 to-amber-500
+         text-black font-bold text-sm rounded-full
+         shadow-[0_0_25px_rgba(234,179,8,0.5)]
+         animate-bounce cursor-pointer
+         hover:scale-105 transition-transform"
+  onClick={() => window.open('https://instagram.com/nagar_armwrestling', '_blank')}
+>
+  {/* Instagram SVG icon */}
+  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+       viewBox="0 0 24 24" fill="currentColor">
+    <path d="M12 2.163c3.204 0 3.584.012 4.85.07
+      3.252.148 4.771 1.691 4.919 4.919.058 1.265.069
+      1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149
+      3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07
+      -4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149
+      -4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07
+      -4.849 0-3.204.013-3.583.07-4.849.149-3.227
+      1.664-4.771 4.919-4.919 1.266-.057 1.645-.069
+      4.849-.069zM12 0C8.741 0 8.333.014 7.053.072
+      2.695.272.273 2.69.073 7.052.014 8.333 0 8.741
+      0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618
+      6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259
+      0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618
+      6.979-6.98.059-1.28.073-1.689.073-4.948
+      0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617
+      -6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0
+      5.838a6.162 6.162 0 100 12.324 6.162 6.162 0
+      000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406
+      -11.845a1.44 1.44 0 100 2.881 1.44 1.44 0
+      000-2.881z"/>
+  </svg>
+  For more updates, follow <span className="underline underline-offset-2">@nagar_armwrestling</span>
+</div>
+
+{/* MOBILE: static banner after the form card */}
+<div
+  className="flex md:hidden items-center justify-center gap-3
+           mt-8 px-5 py-4 w-full
+           bg-gradient-to-r from-yellow-400 to-amber-500
+           text-black font-bold text-sm rounded-2xl
+           shadow-[0_0_20px_rgba(234,179,8,0.4)]
+           cursor-pointer"
+  onClick={() => window.open('https://instagram.com/nagar_armwrestling', '_blank')}
+>
+  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+       viewBox="0 0 24 24" fill="currentColor">
+    <path d="M12 2.163c3.204 0 3.584.012 4.85.07
+      3.252.148 4.771 1.691 4.919 4.919.058 1.265.069
+      1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149
+      3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07
+      -4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149
+      -4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07
+      -4.849 0-3.204.013-3.583.07-4.849.149-3.227
+      1.664-4.771 4.919-4.919 1.266-.057 1.645-.069
+      4.849-.069zM12 0C8.741 0 8.333.014 7.053.072
+      2.695.272.273 2.69.073 7.052.014 8.333 0 8.741
+      0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618
+      6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259
+      0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618
+      6.979-6.98.059-1.28.073-1.689.073-4.948
+      0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617
+      -6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0
+      5.838a6.162 6.162 0 100 12.324 6.162 6.162 0
+      000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406
+      -11.845a1.44 1.44 0 100 2.881 1.44 1.44 0
+      000-2.881z"/>
+  </svg>
+  For more updates, follow <span className="underline underline-offset-2 ml-1">@nagar_armwrestling</span>
+</div>
+
     </div>
   );
 }
