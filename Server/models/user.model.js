@@ -37,11 +37,9 @@ const registrationSchema = new mongoose.Schema(
       type: String,
       required: true,
       enum: [
-        "Below 50kg",
-        "50-60kg",
-        "60-70kg",
-        "70-80kg",
-        "80kg+",
+        "Below 60kg",
+        "Below 75 kg",
+        "Above 75kg+",
       ],
     },
 

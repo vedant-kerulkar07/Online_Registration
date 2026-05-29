@@ -335,11 +335,11 @@ export default function OnlineResistrationForm() {
                                 </SelectItem>
 
                                 <SelectItem value="50-60kg">
-                                  below 75 kg
+                                  Below 75 kg
                                 </SelectItem>
 
                                 <SelectItem value="80kg+">
-                                  above 75kg+
+                                  Above 75kg+
                                 </SelectItem>
                               </SelectContent>
                             </Select>

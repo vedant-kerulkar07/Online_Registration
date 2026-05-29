@@ -14,7 +14,7 @@ const Success = () => {
   const [message, setMessage] = useState("");
 
   useEffect(() => {
-  const verifyPayment = async (retryCount = 0) => {  // ✅ retry on failure
+  const verifyPayment = async (retryCount = 0) => {  //  retry on failure
     const order_id =
       searchParams.get("order_id") || sessionStorage.getItem("order_id");
     const registrationData = JSON.parse(
@@ -46,7 +46,7 @@ const Success = () => {
         setVerifyStatus("success");
         setMessage(verifyData.message || "Registration successful!");
       } else {
-        // ✅ Retry up to 3 times before showing failure
+        //  Retry up to 3 times before showing failure
         if (retryCount < 3) {
           console.log(`Retrying verification... attempt ${retryCount + 1}`);
           setTimeout(() => verifyPayment(retryCount + 1), 2000); // wait 2s then retry
