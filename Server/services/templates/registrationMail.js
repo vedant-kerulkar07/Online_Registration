@@ -129,7 +129,7 @@ export const registrationMailTemplate = ({
                     </td>
 
                     <td style="padding:15px; color:#ffffff; font-size:15px;">
-                      25th June 2026
+                      21th June 2026
                     </td>
                   </tr>
 

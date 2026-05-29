@@ -6,7 +6,7 @@ import Registration from "../models/user.model.js";
 
 export const createRegistration = async (req, res) => {
   try {
-    // ✅ 1. Validate request using Zod
+    // 1. Validate request using Zod
     const parseResult = registrationSchema.safeParse(req.body);
 
     if (!parseResult.success) {
@@ -24,7 +24,7 @@ export const createRegistration = async (req, res) => {
       });
     }
 
-    // ✅ 2. Extract validated data
+    // 2. Extract validated data
     const {
       firstName,
       middleName,
@@ -36,7 +36,7 @@ export const createRegistration = async (req, res) => {
       hand,
     } = parseResult.data;
 
-    // ✅ 3. Dynamic amount logic (backend controlled)
+    // 3. Dynamic amount logic (backend controlled)
     let amount = 150;
     if (weightCategory === "80kg+") {
       amount = 150;
@@ -59,7 +59,7 @@ export const createRegistration = async (req, res) => {
 
     await newRegistration.save();
 
-    // ✅ 5. Send email (non-blocking)
+    // 5. Send email (non-blocking)
     try {
       const mailContent = registrationMailTemplate({
         firstName,
@@ -77,7 +77,7 @@ export const createRegistration = async (req, res) => {
       console.log("Email failed but registration saved:", err.message);
     }
 
-    // ✅ 6. Response
+    // 6. Response
     return res.status(201).json({
       success: true,
       message: "Registration successful",

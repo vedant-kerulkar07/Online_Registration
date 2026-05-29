@@ -42,7 +42,7 @@ import {
 
 import { useNavigate } from "react-router-dom";
 
-// ✅ Validation
+// Validation
 const registrationSchema = z.object({
   firstName: z.string().min(1, "First name is required"),
   middleName: z.string().optional(),
@@ -73,7 +73,7 @@ export default function OnlineResistrationForm() {
     },
   });
 
-  // ✅ Watch weight
+  //  Watch weight
   const weight = form.watch("weightCategory");
 
   const getAmount = () => {
@@ -88,7 +88,7 @@ export default function OnlineResistrationForm() {
 
       const amount = values.weightCategory === "80kg+" ? 149 : 149;
 
-      // ── Step 1: Create Order (same as before) ─────────────────────────
+      // ── Step 1: Create Order
       const orderRes = await fetch(
         `${getEnv("VITE_API_URL")}/payment/create-order`,
         {
@@ -111,16 +111,15 @@ export default function OnlineResistrationForm() {
 
       const { payment_session_id, order_id } = orderData;
 
-      // ── Store values in sessionStorage (because page will redirect) ───
-      // This replaces the Razorpay handler() callback
-      // ── Store values in sessionStorage ───
+      // ── Store values in sessionStorage (because page will redirect) 
+
       sessionStorage.setItem("order_id", order_id);
       sessionStorage.setItem("registrationData", JSON.stringify({
         ...values,
         amount: amount,   
       }));
 
-      // ── Step 2: Open Cashfree (same role as rzp.open()) ───────────────
+      // ── Step 2: Open Cashfree 
       const { load } = await import("@cashfreepayments/cashfree-js");
 
       const cashfree = await load({
@@ -131,10 +130,6 @@ export default function OnlineResistrationForm() {
         paymentSessionId: payment_session_id,
         redirectTarget: "_self", // page redirects to return_url after payment
       });
-
-      // ── Everything after this runs on /payment-status page ────────────
-      // Same as your Razorpay handler() but on a separate page
-      // because Cashfree redirects instead of using a popup callback
 
     } catch (err) {
       console.error(err);
@@ -469,14 +464,7 @@ export default function OnlineResistrationForm() {
           </div>
         </motion.div>
       </div>
-      {/* ─── Instagram Follow Banner ─── */}
-
-{/* DESKTOP: fixed floating pill, bounces continuously */}
-<div className="hidden md:flex fixed bottom-8 right-8 z-50
-         items-center gap-3 px-5 py-3
-         bg-gradient-to-r from-yellow-400 to-amber-500
-         text-black font-bold text-sm rounded-full
-         shadow-[0_0_25px_rgba(234,179,8,0.5)]
+<div className="hidden md:flex fixed bottom-8 right-8 z-50 items-center gap-3 px-5 py-3 bg-gradient-to-r from-yellow-400 to-amber-500 text-black font-bold text-sm rounded-full shadow-[0_0_25px_rgba(234,179,8,0.5)]
          animate-bounce cursor-pointer
          hover:scale-105 transition-transform"
   onClick={() => window.open('https://instagram.com/nagar_armwrestling', '_blank')}

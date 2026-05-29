@@ -1,6 +1,6 @@
 import nodemailer from "nodemailer";
 
-// ✅ Create transporter (configure once)
+// Create transporter (configure once)
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
@@ -9,7 +9,7 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-// ✅ Reusable function
+// Reusable function
 export const sendMail = async ({ to, subject, text }) => {
   try {
     const info = await transporter.sendMail({

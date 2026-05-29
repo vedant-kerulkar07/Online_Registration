@@ -83,7 +83,7 @@ export const verifyPayment = async (req, res) => {
       });
     }
 
-    // ✅ Security 1 — Prevent duplicate registration
+    // Security 1 — Prevent duplicate registration
     // If someone retries after CORS/network error, they won't be charged twice
     const existing = await Registration.findOne({ orderId: order_id });
     if (existing) {
@@ -93,7 +93,7 @@ export const verifyPayment = async (req, res) => {
       });
     }
 
-    // ✅ Security 2 — Always verify payment status from Cashfree directly
+    // Security 2 — Always verify payment status from Cashfree directly
     // Never trust frontend — always confirm from Cashfree server
     const response = await axios.get(
       `${CASHFREE_BASE_URL}/orders/${order_id}`,
@@ -102,7 +102,7 @@ export const verifyPayment = async (req, res) => {
 
     const orderData = response.data;
 
-    // ✅ Security 3 — Only proceed if Cashfree confirms PAID
+    // Security 3 — Only proceed if Cashfree confirms PAID
     if (orderData.order_status !== "PAID") {
       return res.status(400).json({
         success: false,
@@ -110,7 +110,7 @@ export const verifyPayment = async (req, res) => {
       });
     }
 
-    // ✅ Security 4 — Verify amount matches what you expected
+    // Security 4 — Verify amount matches what you expected
     // Prevents someone from paying ₹1 
     const expectedAmount = 149;
     if (parseFloat(orderData.order_amount) !== expectedAmount) {
@@ -130,7 +130,7 @@ export const verifyPayment = async (req, res) => {
     const payments = paymentsResponse.data;
     const successfulPayment = payments.find((p) => p.payment_status === "SUCCESS");
 
-    // ✅ Security 5 — Save with full payment audit trail
+    // Security 5 — Save with full payment audit trail
     const registration = new Registration({
       ...registrationData,
       paymentStatus: "Completed",
@@ -182,7 +182,7 @@ export const handleWebhook = async (req, res) => {
       return res.status(401).json({ success: false, message: "Missing webhook headers" });
     }
 
-    // ✅ Security 6 — Verify webhook is genuinely from Cashfree
+    // Security 6 — Verify webhook is genuinely from Cashfree
     const signedPayload = `${timestamp}${JSON.stringify(req.body)}`;
     const expectedSignature = crypto
       .createHmac("sha256", webhookSecret)
@@ -198,7 +198,7 @@ export const handleWebhook = async (req, res) => {
     if (type === "PAYMENT_SUCCESS_WEBHOOK") {
       const { order, payment } = data;
 
-      // ✅ Security 7 — Webhook also checks for duplicate before saving
+      // Security 7 — Webhook also checks for duplicate before saving
       const existing = await Registration.findOne({ orderId: order.order_id });
 
       if (!existing) {
