@@ -77,7 +77,7 @@ export default function OnlineResistrationForm() {
   const weight = form.watch("weightCategory");
 
   const getAmount = () => {
-    if (weight === "80kg+") return 149;
+    if (weight === "75kg+") return 149;
     if (weight) return 149;
     return "";
   };
@@ -86,7 +86,7 @@ export default function OnlineResistrationForm() {
     try {
       setLoading(true);
 
-      const amount = values.weightCategory === "80kg+" ? 149 : 149;
+      const amount = values.weightCategory === "75kg+" ? 149 : 149;
 
       // ── Step 1: Create Order
       const orderRes = await fetch(
@@ -330,15 +330,15 @@ export default function OnlineResistrationForm() {
                               </SelectTrigger>
 
                               <SelectContent className="bg-slate-900 text-white border-gray-700">
-                                <SelectItem value="Below 50kg">
+                                <SelectItem value="Below 60kg">
                                   Below 60kg
                                 </SelectItem>
 
-                                <SelectItem value="50-60kg">
-                                  Below 75 kg
+                                <SelectItem value="Below 75kg">
+                                  Below 75kg
                                 </SelectItem>
 
-                                <SelectItem value="80kg+">
+                                <SelectItem value="Above 75kg+">
                                   Above 75kg+
                                 </SelectItem>
                               </SelectContent>

@@ -38,7 +38,7 @@ const registrationSchema = new mongoose.Schema(
       required: true,
       enum: [
         "Below 60kg",
-        "Below 75 kg",
+        "Below 75kg",
         "Above 75kg+",
       ],
     },
@@ -72,6 +72,15 @@ const registrationSchema = new mongoose.Schema(
     },
     orderId: {
       type: String,
+    },
+    // Add to user.model.js
+    paidAt: {
+      type: Date,
+      default: null,
+    },
+    webhookSaved: {
+      type: Boolean,
+      default: false,
     },
   },
   { timestamps: true }

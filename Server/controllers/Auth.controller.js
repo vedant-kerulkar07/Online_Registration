@@ -37,9 +37,9 @@ export const createRegistration = async (req, res) => {
     } = parseResult.data;
 
     // 3. Dynamic amount logic (backend controlled)
-    let amount = 150;
-    if (weightCategory === "80kg+") {
-      amount = 150;
+    let amount = 149;
+    if (weightCategory === "75kg+") {
+      amount = 149;
     }
 
     // ✅ 4. Create registration
