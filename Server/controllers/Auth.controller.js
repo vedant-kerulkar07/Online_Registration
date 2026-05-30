@@ -71,7 +71,7 @@ export const createRegistration = async (req, res) => {
       await sendMail({
         to: email,
         subject: mailContent.subject,
-        text: mailContent.text,
+        html: mailContent.html,
       });
     } catch (err) {
       console.log("Email failed but registration saved:", err.message);

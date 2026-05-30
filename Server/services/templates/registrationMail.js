@@ -6,7 +6,7 @@ export const registrationMailTemplate = ({
 }) => {
   return {
     subject: "Registration Confirmed | Ahilyanagar Armwrestling Tournament",
-    text: `
+    html: `
   <!DOCTYPE html>
   <html lang="en">
   <head>

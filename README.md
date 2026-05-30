@@ -2,7 +2,6 @@
 
 A full-stack online registration portal for the Ahilyanagar Armwrestling Championship, featuring UPI payment integration, real-time form validation, and an admin dashboard.
 
-![Ahilyanagar Armwrestling](./Client/public/logo.jpeg)
 ---
 
 ## 📋 Features
