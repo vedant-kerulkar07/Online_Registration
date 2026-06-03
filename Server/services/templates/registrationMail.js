@@ -125,11 +125,11 @@ export const registrationMailTemplate = ({
 
                   <tr>
                     <td style="padding:15px; color:#bbbbbb; font-size:15px;">
-                      Tournament Date
+                      Tournament Date & Time
                     </td>
 
                     <td style="padding:15px; color:#ffffff; font-size:15px;">
-                      21th June 2026
+                      21th June 2026, 10:30 AM
                     </td>
                   </tr>
 
@@ -153,7 +153,8 @@ export const registrationMailTemplate = ({
                       </h2>
 
                       <p style="margin:0; color:#ffffff; font-size:18px; font-weight:bold;">
-                        Ahilyanagar Armwrestling Arena
+                            BEING HEALTHY GYM <br/>
+                            Near Surabhi Hospital Chhatrapati Sambhaji Maharaj Road, Ahilyanagar - 414001 
                       </p>
 
                     </td>
