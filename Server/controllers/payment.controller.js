@@ -139,7 +139,7 @@ export const verifyPayment = async (req, res) => {
 
     await registration.save();
 
-    const { subject, text } = registrationMailTemplate({
+    const mailContent = registrationMailTemplate({
       firstName: registrationData.firstName,
       lastName: registrationData.lastName,
       weightCategory: registrationData.weightCategory,
@@ -147,9 +147,9 @@ export const verifyPayment = async (req, res) => {
     });
 
     await sendMail({
-      to: registrationData.email,
-      subject,
-      text,
+      to: email,
+      subject: mailContent.subject,
+      html: mailContent.html,
     });
 
     res.status(200).json({
