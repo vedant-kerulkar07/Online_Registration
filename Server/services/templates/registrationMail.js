@@ -7,188 +7,183 @@ export const registrationMailTemplate = ({
   return {
     subject: "Registration Confirmed | Ahilyanagar Armwrestling Tournament",
     html: `
-  <!DOCTYPE html>
-  <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Registration Successful</title>
-  </head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Registration Successful</title>
+</head>
 
-  <body style="margin:0; padding:0; background-color:#0d0d0d; font-family:Arial, Helvetica, sans-serif;">
+<body style="margin:0;padding:0;background-color:#0d0d0d;font-family:Arial,Helvetica,sans-serif;">
 
-    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#0d0d0d; padding:40px 0;">
-      <tr>
-        <td align="center">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#0d0d0d">
+<tr>
+<td align="center" style="padding:30px 15px;">
 
-          <table width="650" cellpadding="0" cellspacing="0" border="0"
-            style="background:#111111; border-radius:18px; overflow:hidden; border:2px solid #d4af37; box-shadow:0 0 20px rgba(212,175,55,0.3);">
+<table width="650" border="0" cellspacing="0" cellpadding="0"
+style="max-width:650px;background:#111111;border:2px solid #d4af37;">
 
-            <!-- Header -->
-            <tr>
-              <td align="center"
-                style="background:linear-gradient(135deg,#000000,#1a1a1a); padding:35px 20px; border-bottom:2px solid #d4af37;">
+<!-- Header -->
+<tr>
+<td align="center"
+style="background:#000000;padding:30px 20px;border-bottom:2px solid #d4af37;">
 
-                <h1 style="margin:0; color:#d4af37; font-size:38px; letter-spacing:2px; font-weight:bold;">
-                  AHILYANAGAR
-                </h1>
+<h1 style="margin:0;color:#d4af37;font-size:34px;">
+AHILYANAGAR
+</h1>
 
-                <p style="margin:10px 0 0; color:#ffffff; font-size:20px; letter-spacing:1px;">
-                  ARMWRESTLING TOURNAMENT
-                </p>
+<p style="margin:10px 0 0;color:#ffffff;font-size:18px;">
+ARMWRESTLING TOURNAMENT
+</p>
 
-              </td>
-            </tr>
+</td>
+</tr>
 
-            <!-- Success Banner -->
-            <tr>
-              <td align="center" style="padding:30px 25px 10px;">
+<!-- Success Banner -->
+<tr>
+<td align="center" style="padding:30px 20px 15px;">
 
-                <div style="
-                  display:inline-block;
-                  background:#d4af37;
-                  color:#000000;
-                  padding:12px 28px;
-                  border-radius:50px;
-                  font-size:24px;
-                  font-weight:bold;
-                  letter-spacing:1px;
-                ">
-                  ✅ REGISTRATION SUCCESSFUL
-                </div>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td
+style="background:#d4af37;color:#000000;padding:12px 24px;font-size:20px;font-weight:bold;">
+REGISTRATION SUCCESSFUL
+</td>
+</tr>
+</table>
 
-              </td>
-            </tr>
+</td>
+</tr>
 
-            <!-- Greeting -->
-            <tr>
-              <td style="padding:25px 40px 10px; color:#ffffff;">
+<!-- Greeting -->
+<tr>
+<td style="padding:10px 40px;color:#ffffff;">
 
-                <p style="font-size:18px; margin:0 0 15px;">
-                  Hello <strong style="color:#d4af37;">${firstName}</strong>,
-                </p>
+<p style="font-size:18px;margin:0 0 15px;">
+Hello <strong style="color:#d4af37;">${firstName}</strong>,
+</p>
 
-                <p style="font-size:16px; line-height:1.8; color:#d9d9d9;">
-                  Congratulations! Your registration for the
-                  <strong style="color:#d4af37;">
-                    Ahilyanagar Armwrestling Tournament
-                  </strong>
-                  has been successfully confirmed.
-                </p>
+<p style="font-size:16px;line-height:1.8;color:#dddddd;">
+Congratulations! Your registration for the
+<strong style="color:#d4af37;">
+Ahilyanagar Armwrestling Tournament
+</strong>
+has been successfully confirmed.
+</p>
 
-              </td>
-            </tr>
+</td>
+</tr>
 
-            <!-- Registration Details -->
-            <tr>
-              <td style="padding:20px 40px;">
+<!-- Registration Details -->
+<tr>
+<td style="padding:20px 40px;">
 
-                <table width="100%" cellpadding="0" cellspacing="0" border="0"
-                  style="background:#1a1a1a; border-radius:12px; overflow:hidden; border:1px solid #333;">
+<table width="100%" border="0" cellspacing="0" cellpadding="0"
+style="background:#1a1a1a;border:1px solid #333333;">
 
-                  <tr>
-                    <td colspan="2"
-                      style="background:#d4af37; color:#000000; padding:15px; font-size:20px; font-weight:bold; text-align:center;">
-                      Registration Details
-                    </td>
-                  </tr>
+<tr>
+<td colspan="2"
+style="background:#d4af37;color:#000000;padding:15px;text-align:center;font-size:20px;font-weight:bold;">
+Registration Details
+</td>
+</tr>
 
-                  <tr>
-                    <td style="padding:15px; color:#bbbbbb; font-size:15px; border-bottom:1px solid #2b2b2b;">
-                      Full Name
-                    </td>
+<tr>
+<td style="padding:15px;color:#bbbbbb;border-bottom:1px solid #333;">
+Full Name
+</td>
+<td style="padding:15px;color:#ffffff;border-bottom:1px solid #333;">
+${firstName} ${lastName}
+</td>
+</tr>
 
-                    <td style="padding:15px; color:#ffffff; font-size:15px; border-bottom:1px solid #2b2b2b;">
-                      ${firstName} ${lastName}
-                    </td>
-                  </tr>
+<tr>
+<td style="padding:15px;color:#bbbbbb;border-bottom:1px solid #333;">
+Weight Category
+</td>
+<td style="padding:15px;color:#ffffff;border-bottom:1px solid #333;">
+${weightCategory}
+</td>
+</tr>
 
-                  <tr>
-                    <td style="padding:15px; color:#bbbbbb; font-size:15px; border-bottom:1px solid #2b2b2b;">
-                      Weight Category
-                    </td>
+<tr>
+<td style="padding:15px;color:#bbbbbb;border-bottom:1px solid #333;">
+Registration Amount
+</td>
+<td style="padding:15px;color:#00ff99;font-weight:bold;border-bottom:1px solid #333;">
+₹${amount}
+</td>
+</tr>
 
-                    <td style="padding:15px; color:#ffffff; font-size:15px; border-bottom:1px solid #2b2b2b;">
-                      ${weightCategory}
-                    </td>
-                  </tr>
+<tr>
+<td style="padding:15px;color:#bbbbbb;">
+Tournament Date
+</td>
+<td style="padding:15px;color:#ffffff;">
+21 June 2026, 10:30 AM
+</td>
+</tr>
 
-                  <tr>
-                    <td style="padding:15px; color:#bbbbbb; font-size:15px; border-bottom:1px solid #2b2b2b;">
-                      Registration Amount
-                    </td>
+</table>
 
-                    <td style="padding:15px; color:#00ff99; font-size:16px; font-weight:bold; border-bottom:1px solid #2b2b2b;">
-                      ₹${amount}
-                    </td>
-                  </tr>
+</td>
+</tr>
 
-                  <tr>
-                    <td style="padding:15px; color:#bbbbbb; font-size:15px;">
-                      Tournament Date & Time
-                    </td>
+<!-- Venue -->
+<tr>
+<td style="padding:0 40px 25px;">
 
-                    <td style="padding:15px; color:#ffffff; font-size:15px;">
-                      21th June 2026, 10:30 AM
-                    </td>
-                  </tr>
+<table width="100%" border="0" cellspacing="0" cellpadding="0"
+style="border:1px solid #d4af37;background:#1a1a1a;">
 
-                </table>
+<tr>
+<td align="center" style="padding:25px;">
 
-              </td>
-            </tr>
+<h2 style="margin:0 0 12px;color:#d4af37;">
+📍 Venue
+</h2>
 
-            <!-- Venue Section -->
-            <tr>
-              <td style="padding:10px 40px 20px;">
+<p style="margin:0;color:#ffffff;font-size:16px;line-height:1.8;">
+BEING HEALTHY GYM<br>
+Near Surabhi Hospital,<br>
+Chhatrapati Sambhajinagar Road,<br>
+Ahilyanagar - 414001
+</p>
 
-                <table width="100%" cellpadding="0" cellspacing="0" border="0"
-                  style="background:linear-gradient(135deg,#1a1a1a,#0f0f0f); border:1px solid #d4af37; border-radius:12px;">
+</td>
+</tr>
 
-                  <tr>
-                    <td align="center" style="padding:25px;">
+</table>
 
-                      <h2 style="margin:0 0 10px; color:#d4af37; font-size:24px;">
-                        📍 Venue
-                      </h2>
+</td>
+</tr>
 
-                      <p style="margin:0; color:#ffffff; font-size:18px; font-weight:bold;">
-                            BEING HEALTHY GYM <br/>
-                            Near Surabhi Hospital Chhatrapati Sambhajinagar Road, Ahilyanagar - 414001 
-                      </p>
+<!-- Footer -->
+<tr>
+<td align="center"
+style="background:#000000;padding:25px;border-top:2px solid #d4af37;">
 
-                    </td>
-                  </tr>
+<h3 style="margin:0;color:#d4af37;">
+STRENGTH • RESPECT • HONOR
+</h3>
 
-                </table>
+<p style="margin:15px 0 0;color:#aaaaaa;font-size:14px;line-height:1.7;">
+Thank you for registering.<br>
+We look forward to seeing you at the tournament!
+</p>
 
-              </td>
-            </tr>
-            <!-- Footer -->
-            <tr>
-              <td align="center"
-                style="background:#0a0a0a; padding:30px 20px; border-top:2px solid #d4af37;">
+</td>
+</tr>
 
-                <h3 style="margin:0; color:#d4af37; letter-spacing:1px;">
-                  STRENGTH • RESPECT • HONOR
-                </h3>
+</table>
 
-                <p style="margin:15px 0 0; color:#888888; font-size:14px; line-height:1.7;">
-                  Thank you for registering.<br/>
-                  We look forward to seeing you at the tournament!
-                </p>
+</td>
+</tr>
+</table>
 
-              </td>
-            </tr>
-
-          </table>
-
-        </td>
-      </tr>
-    </table>
-
-  </body>
-  </html>
-  `,
+</body>
+</html>
+`,
   };
 };
