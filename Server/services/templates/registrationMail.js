@@ -154,7 +154,7 @@ export const registrationMailTemplate = ({
 
                       <p style="margin:0; color:#ffffff; font-size:18px; font-weight:bold;">
                             BEING HEALTHY GYM <br/>
-                            Near Surabhi Hospital Chhatrapati Sambhaji Maharaj Road, Ahilyanagar - 414001 
+                            Near Surabhi Hospital Chhatrapati Sambhajinagar Road, Ahilyanagar - 414001 
                       </p>
 
                     </td>
