@@ -51,7 +51,7 @@ const registrationSchema = z.object({
   contactNumber: z.string().min(10, "Contact number is required"),
   weightCategory: z.string().min(1, "Select weight category"),
   address: z.string().min(1, "Address is required"),
-  hand: z.string().min(1, "Select hand"),
+  hand: z.string().optional(),
 });
 
 export default function OnlineResistrationForm() {

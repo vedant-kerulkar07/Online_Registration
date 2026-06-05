@@ -67,7 +67,6 @@ const registrationSchema = new mongoose.Schema(
 
     hand: {
       type: String,
-      required: true,
       enum: ["Right", "Left"],
     },
     orderId: {
