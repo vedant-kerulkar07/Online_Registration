@@ -147,11 +147,11 @@ export const verifyPayment = async (req, res) => {
     });
 
     await sendMail({
-      to: email,
+      to: registrationData.email,
       subject: mailContent.subject,
       html: mailContent.html,
     });
-
+    
     res.status(200).json({
       success: true,
       message: "Payment verified and registration saved successfully",
