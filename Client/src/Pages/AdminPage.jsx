@@ -31,6 +31,10 @@ const WEIGHT_CATEGORIES = [
   "Above 75kg+",
 ];
 
+const getNetAmount = (amount) => {
+  return (Number(amount) - 3).toFixed(2);
+};
+
 const AdminPage = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -68,9 +72,9 @@ const AdminPage = () => {
 
   // Total Revenue of filtered users
   const totalRevenue = filteredUsers.reduce(
-    (acc, user) => acc + Number(user.amount || 0),
+    (acc, user) => acc + Number(getNetAmount(user.amount || 0)),
     0
-  );
+  ).toFixed(2);
 
   // PDF Download — uses filteredUsers
   const downloadPDF = () => {
@@ -112,7 +116,7 @@ const AdminPage = () => {
         user.contactNumber,
         user.weightCategory,
         user.hand,
-        `₹${user.amount}`,
+        `₹${getNetAmount(user.amount)}`,
         user.paymentStatus,
       ]),
 
@@ -235,10 +239,9 @@ const AdminPage = () => {
                 key={cat}
                 onClick={() => setSelectedWeight(cat)}
                 className={`px-4 py-2 rounded-full text-sm font-semibold border transition-all duration-200
-                  ${
-                    selectedWeight === cat
-                      ? "bg-gradient-to-r from-yellow-400 to-amber-500 text-black border-transparent shadow-[0_0_15px_rgba(234,179,8,0.4)]"
-                      : "bg-slate-900/60 text-gray-300 border-yellow-500/20 hover:border-yellow-500/50 hover:text-yellow-400"
+                  ${selectedWeight === cat
+                    ? "bg-gradient-to-r from-yellow-400 to-amber-500 text-black border-transparent shadow-[0_0_15px_rgba(234,179,8,0.4)]"
+                    : "bg-slate-900/60 text-gray-300 border-yellow-500/20 hover:border-yellow-500/50 hover:text-yellow-400"
                   }`}
               >
                 {cat}
@@ -338,7 +341,7 @@ const AdminPage = () => {
                         </TableCell>
 
                         <TableCell className="text-yellow-400 font-semibold">
-                          ₹{user.amount}
+                          ₹{getNetAmount(user.amount)}
                         </TableCell>
 
                         <TableCell>
